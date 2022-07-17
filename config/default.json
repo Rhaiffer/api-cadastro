@@ -1,0 +1,12 @@
+{
+    "mysql": {
+        "banco-de-dados": "airbnb_ny2",
+        "usuario": "root",
+        "senha": "Ch1__94wi@",
+        "host": "127.0.0.1"
+    },
+    "api": {
+        "porta": 3000
+    }
+
+}
