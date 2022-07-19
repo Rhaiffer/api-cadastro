@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const config = require('config')
-const roteador = require('./rotas/fornecedores')
+const roteadorLogin= require('./rotas/login');
+const roteadorFornecedor = require('./rotas/fornecedores');
 const NaoEncontrado = require('./erro/NaoEncontrado')
 const CampoInvalido = require ('./erro/CampoInvalido')
 const DadosNaoFornecidos = require('./erro/DadosNaoFornecidos')
@@ -28,7 +29,8 @@ app.use((requisicao, resposta, proximo) => {
         proximo()
 })
 
-app.use('/api/fornecedores', roteador);
+app.use('/api/rotas/login', roteadorLogin.Login);
+app.use('/api/rotas/fornecedores', roteadorFornecedor);
 
 
 

@@ -2,8 +2,8 @@ const express = require('express')
 const app = express() 
 const bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
-const roteador = require('express').Router()
 var http = require('http'); 
+const roteadorLogin = require('express').Router();
 var cookieParser = require('cookie-parser'); 
 const secret = "meu-segredo";//esse segredo do JWT seria uma config
 
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cookieParser()); 
 
 //rota de login
-app.post('/login', (requisicao, resposta, proximo) => { 
+ const Login = async (requisicao, resposta, proximo) => { 
     if(requisicao.body.user === 'Rhaiffer' && requisicao.body.pwd === 'Hausz123!'){ 
         //auth ok 
         const id = 1; //esse id viria do banco de dados 
@@ -26,10 +26,16 @@ app.post('/login', (requisicao, resposta, proximo) => {
     }
     
     return resposta.status(401).send('Login inválido!'); 
-})    
+}
  
 //rota de logout
-app.post('/logout', function(requisicao, resposta) { 
-    console.log("Fez logout e cancelou o token!");
-    resposta.status(200).send({ auth: false, token: null }); 
-});
+// roteadorLogin.post('/logout', function(requisicao, resposta) { 
+//     console.log("Fez logout e cancelou o token!");
+//     resposta.status(200).send({ auth: false, token: null }); 
+// });
+
+
+ module.exports = {
+    // roteadorLogin,
+    Login
+}

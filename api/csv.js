@@ -118,6 +118,6 @@ csvtojson().fromFile(fileName).then(source => {
             }
         });
     }
-    console.log("All items stored into database successfully");
+    console.log("Todos os itens foram inseridos na tabela com sucesso!!!");
    
 });

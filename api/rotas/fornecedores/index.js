@@ -1,8 +1,8 @@
-const roteador = require('express').Router()
+const roteadorFornecedor = require('express').Router()
 const TabelaFornecedor = require('./TabelaFornecedor')
 const Fornecedor = require('./Fornecedor')
 const express = require('express') 
-/* const app = express() 
+const app = express() 
 var cookieParser = require('cookie-parser'); 
 const bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
@@ -10,31 +10,31 @@ const secret = "meu-segredo";//esse segredo do JWT seria uma config
  
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
-app.use(cookieParser());  */
+app.use(cookieParser());  
  
 
 
  
 //função que verifica se o JWT é ok
-/* function verifyJWT(req, res, next){ 
-    var token = req.headers['x-access-token']; 
+ function verifyJWT(requisicao, resposta, next){ 
+    var token = requisicao.headers['x-access-token']; 
     if (!token) 
-        return res.status(401).send({ auth: false, message: 'Token não informado.' }); 
+        return resposta.status(401).send({ auth: false, message: 'Token não informado.' }); 
     
     jwt.verify(token, secret, function(err, decoded) { 
         if (err) 
-            return res.status(500).send({ auth: false, message: 'Token inválido.' }); 
+            return resposta.status(500).send({ auth: false, message: 'Token inválido.' }); 
         
         req.userId = decoded.id; 
         console.log("User Id: " + decoded.id)
         next(); 
     }); 
-}    */ 
+}    
 
 
 
 
-roteador.get('/', async (requisicao, resposta) => {
+roteadorFornecedor.get('/', verifyJWT, async (requisicao, resposta) => {
     const resultados = await TabelaFornecedor.listar()
     resposta.status(200)
     resposta.send(
@@ -42,7 +42,7 @@ roteador.get('/', async (requisicao, resposta) => {
     )
 })
 
-roteador.post('/', async (requisicao, resposta, proximo) => {
+roteadorFornecedor.post('/', verifyJWT, async (requisicao, resposta, proximo) => {
     
     try {
         const dadosRecebidos = requisicao.body
@@ -58,7 +58,7 @@ roteador.post('/', async (requisicao, resposta, proximo) => {
 
 })
 
-roteador.get('/:idFornecedor', async (requisicao, resposta, proximo) => {
+roteadorFornecedor.get('/:idFornecedor', verifyJWT, async (requisicao, resposta, proximo) => {
     try {
         const id = requisicao.params.idFornecedor
         const fornecedor = new Fornecedor({ id: id })
@@ -72,7 +72,7 @@ roteador.get('/:idFornecedor', async (requisicao, resposta, proximo) => {
     }
 })
 
-roteador.put('/:idFornecedor', async (requisicao, resposta, proximo) => {
+roteadorFornecedor.put('/:idFornecedor',verifyJWT, async (requisicao, resposta, proximo) => {
     
     try {
         const id = requisicao.params.idFornecedor
@@ -87,7 +87,7 @@ roteador.put('/:idFornecedor', async (requisicao, resposta, proximo) => {
     }
 })
 
-roteador.delete('/:idFornecedor', async (requisicao, resposta, proximo) => {
+roteadorFornecedor.delete('/:idFornecedor',verifyJWT, async (requisicao, resposta, proximo) => {
     
     try {
         const id = requisicao.params.idFornecedor
@@ -100,4 +100,4 @@ roteador.delete('/:idFornecedor', async (requisicao, resposta, proximo) => {
        proximo(erro)
     }
 })
-module.exports = roteador
+module.exports = roteadorFornecedor
